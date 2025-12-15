@@ -10,7 +10,9 @@ Player::Player(string job, string _nickname, int lev, int hp, int mp, int att, i
     power(att),
     defence(def),
     accuracy(acc),
-    speed(spd)
+    speed(spd),
+    MAX_HP(hp),
+    MAX_MP(mp)
 {
 }
 
@@ -20,8 +22,8 @@ void Player::printPlayerStatus()
     cout << "* 현재 능력치" << endl;
     cout << "닉네임: " << nickname << endl;
     cout << "Lv. " << level << endl;
-    cout << "HP: " << HP << endl;
-    cout << "MP: " << MP << endl;
+    cout << "HP: " << HP << " / " << MAX_HP << endl;
+    cout << "MP: " << MP << " / " << MAX_MP << endl;
     cout << "공격력: " << power << endl;
     cout << "방어력: " << defence << endl;
     cout << "정확도: " << accuracy << endl;
@@ -29,7 +31,26 @@ void Player::printPlayerStatus()
     cout << "------------------------------------" << endl;
 }
 
+void Player::takeDamage(int damage)
+{
+    int finalDamage = damage - defence;
 
+    if (finalDamage < 0) finalDamage = 0;   // 데미지가 음수 일 때 0으로 변환.
+
+    HP -= finalDamage;                      // 데미지 계산
+
+    if (HP < 0) HP = 0;                     // 체력이 0 밑은 다 0으로 인식
+
+    cout << nickname
+        << " 이(가) "
+        << finalDamage << " 피해를 입었다. (HP : "
+        << HP << " / " << MAX_HP << ")\n";
+}
+
+bool Player::isDead(int HP)
+{
+    return HP <= 0;
+}
 
 void Player::setNickname(string nickname)
 {

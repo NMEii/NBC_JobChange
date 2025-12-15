@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+class Monster;
+
 class Player
 {
 public:
@@ -14,10 +16,14 @@ public:
 		int att, 
 		int def, 
 		int acc, 
-		int spd
+		int spd 		
 	);
 	virtual void attack() = 0;		// 순수 가상합수
+	virtual void attack(Monster* monster) = 0;		// 순수 가상합수
 	void printPlayerStatus();		// 스탯창
+
+	void takeDamage(int damage);
+	bool isDead(int HP);
 
 	string getJobName();
 	string getNickname();
@@ -44,11 +50,13 @@ private:
 	string job_name;		// 직업 이름
 	string nickname;		// 닉네임
 	int level;				// 레벨
-	int HP;					// 체력
-	int MP;					// 마나
+	int HP;					// 현재 체력
+	int MP;					// 현재 마나
 	int power;				// 공격력
 	int defence;			// 방어력
 	int accuracy;			// 명중률
 	int speed;				// 속도
+	int MAX_HP;				// 최대 체력
+	int MAX_MP;				// 최대 마나
 };
 

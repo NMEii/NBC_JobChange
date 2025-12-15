@@ -11,7 +11,7 @@ PlayerManager::PlayerManager()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		Slot[i] = { nullptr };
+		Slot[i] = nullptr;
 	}
 }
 
@@ -20,16 +20,29 @@ PlayerManager :: ~PlayerManager()
 {
 	for (int i = 0; i < 4; i++)
 	{
+		if (Slot[i] == nullptr)
+		{
+			continue;
+		}
 		delete Slot[i];
-		Slot[i] = { nullptr };
+		Slot[i] = nullptr;
 	}
-	
 }
 
-/*
-	
-*/
-void PlayerManager::showSlot() const	
+int PlayerManager::ProcessInput(int defaultValue)
+{
+	int input = defaultValue;	// 입력 실패시 기본값 설정
+	cin >> input;
+	if (cin.fail() || cin.peek() != '\n')	// cin.fail 입력 실패 / cin.peak 제일 마지막에 정수 외의 문자가 올시
+	{							
+		cin.clear();			// 다음 입력을 받을 수 있도록 스트림 상태 복구
+		input = defaultValue;	// 잘못된 입력은 무조건 기본값으로 처리
+	}
+	cin.ignore(INT_MAX, '\n');	// 이전 입력에서 남아 있는 문자 제거
+	return input;
+}
+
+void PlayerManager::showSlot() const
 {
 	cout << "< 캐릭터 목록 >" << endl;
 	cout << "------------------------------------" << endl;
@@ -64,9 +77,9 @@ bool PlayerManager::isEmptySlot(int slotIndex)
 
 void PlayerManager::createCharacter(int slotIndex)
 {
-	string jobs[] = { "검성", "법성", "살성", "궁성" };
+	string jobs[] = { "전사", "마법사", "도적", "궁수" };
 	string name;
-	int jobIndex;
+	int jobIndex = 0;
 
 	if (slotIndex < 0 || slotIndex >= MAX_SLOT)
 	{
@@ -87,13 +100,17 @@ void PlayerManager::createCharacter(int slotIndex)
 		cout << i + 1 << ". " << jobs[i] << endl;
 
 	}
-	cin >> jobIndex;
-	if (jobIndex < 1 || jobIndex > 4)
-	{
-		cout << "잘못된 슬롯입니다. " << endl;
-		return;
-	}
 
+	while (jobIndex < 1 || jobIndex > 4)
+	{
+		jobIndex = ProcessInput(5);
+
+		if (jobIndex < 1 || jobIndex > 4)
+		{
+			cout << "잘못된 입력입니다. " << endl;
+		}
+	}
+		
 	cout << "닉네임 입력 : ";
 	cin >> name;
 

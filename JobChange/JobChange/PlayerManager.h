@@ -14,7 +14,10 @@ public:
 	void createCharacter(int slotIndex);
 	bool isEmptySlot(int slotIndex);
 	void showSlot() const;
+	int ProcessInput(int defaultValue = 0);
+
 	Player* getPlayer(int slotIndex);
+
 private:
 	static const int MAX_SLOT = 4;
 	Player* Slot[MAX_SLOT];
